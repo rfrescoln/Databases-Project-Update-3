@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request
 import pymysql
 import pymysql.cursors
 
-conn= pymysql.connect(host='localhost', user='root', password='Rainbow.86', db='ProjectTestDBA')
+conn= pymysql.connect(host='localhost', user='root', password='Rainbow.86', db='Project')
 app = Flask(__name__)
 
 @app.route('/')
@@ -15,7 +15,11 @@ def home():
 def welcome():
     return render_template('welcome.html')
 
-@app.route('/AdminWelcome', methods = ['GET', 'POST'])
+@app.route('/AdminHome')
+def AdminHome():
+    return render_template('adminhome.html')
+
+@app.route('/AdminAdd', methods = ['GET', 'POST'])
 def AdminWelcome():
     a = conn.cursor()
     error = None
@@ -61,10 +65,16 @@ def PurchaseOrderCreate():
 @app.route('/goodsreceiptinfo')
 def CreateGoodsReceipt():
     a = conn.cursor()
+    #create purchase order table?
+    #create table with counter for intervals to allow placement of data from sql, increase incrementally
     sql = 'SELECT * FROM PurchaseOrder'
+    #save this data and print it?
     a.execute(sql)
     results = a.fetchall()
     print(results)
+    sqldelete = 'DELETE PurchaseOrder'
+    a.execute(sqldelete)
+    conn.commit()
     return redirect(url_for('ManagerHome'))
 
 @app.route('/VendorHome')
@@ -78,11 +88,11 @@ def login():
         usern = request.form['username']
         passw = request.form['password']
         a = conn.cursor()
-        sql = 'SELECT * FROM UserTable WHERE UserName = %s AND PasswordInf = %s'
+        sql = 'SELECT * FROM UserTable WHERE UserName = %s AND Pass = %s'
         data = a.execute(sql, (usern, passw))
         data2 = a.fetchone()
         if data2[2] == "Admin":
-            return redirect(url_for('AdminWelcome'))
+            return redirect(url_for('AdminHome'))
         elif data2[2] == "Manager":
             return redirect(url_for('ManagerHome'))
         elif data2[2] == "Vendor":
