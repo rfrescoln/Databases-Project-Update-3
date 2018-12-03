@@ -1,0 +1,13 @@
+<form action="/VendorWelcome" method="post">
+    Vendor Name:<br>
+    <input type="text" name="VendorName" value="{{request.form.vname}}"><br>
+    Minimum Order Quantity:<br>
+    <input type="text" name="MinOrderQuant" value="{{request.form.minquant}}"><br>
+    Quality:<br>
+    <input type="text" name="Quality" value="{{request.form.quality}}"><br>
+    Email:<br>
+    <input type="text" name="Email" value="{{request.form.email}}"><br>
+    Phone Number<br>
+    <input type="text" name="PhoneNo" value="{{request.form.phoneno}}"><br>
+    <input type="submit" value="Submit">
+</form>
